@@ -91,11 +91,8 @@ class App extends Component {
           <div className="card-footer">
             <h5 className="card-title">Edit form</h5>
             <form>
-              {/* Select-based inputs first */}
-              {this.attributes.filter(x => this.attributesTypes[x] === 'select').map(x => (<FormField attr={x} form={this}/>))}
-
-              {/* Text input fields */}
-              {this.attributes.filter(x => this.attributesTypes[x] === 'text').map(x => (<FormField attr={x} form={this}/>))}
+              {/* Text-based inputs go first */}
+              {this.attributes.sort(x => this.attributesTypes[x] === 'select').map(x => (<FormField attr={x} form={this}/>))}
             </form>
           </div>
         </div>
