@@ -95,7 +95,7 @@ class App extends Component {
               <summary>Description: </summary>
               <p><i>{this.state.description}</i></p>
             </details>
-            <p>Rating: <strong>{this.state.rating}</strong></p>
+            <p>Rating: <strong><mark>{this.state.rating}</mark></strong></p>
             <p>Genres: {this.state.genres.map(x => (<span className="badge badge-primary spacey">{x}</span>))}</p>
             Actors: {this.state.actors.length ? (<ul>{this.state.actors.map(a => <li>{a}</li>)}</ul>): (<i>No actors</i>) }
             <p>Would recommend to: <strong>{this.state.recommendation}</strong></p>
