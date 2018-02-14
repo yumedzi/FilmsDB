@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 
 // class App extends Component {
@@ -18,16 +18,17 @@ import './App.css';
 //   }
 // }
 
-class App extends React.Component {
+class App extends Component {
   constructor(props) {
     super(props);
     // Bind change* methods
     this.changeValue = this.changeValue.bind(this);
     this.state = {
-      name: '',
-      rating: 0,
-      jenre: '',
-      actors: [],
+      name: props.name || '',
+      rating: props.rating || 0,
+      jenre: props.jenre || '',
+      actors_raw: props.actors || '',
+      actors: props.actors ? props.actors.split(',').map(x => x.trim()).filter(Boolean) : [],
     };
   }
 
@@ -36,7 +37,8 @@ class App extends React.Component {
     // console.log(event.target);
     const attr = event.target.getAttribute('attr');
     if (attr === 'actors') {
-      newState[attr] = event.target.value.split(',').map(x => x.trim()).filter(Boolean);
+      newState['actors_raw'] = event.target.value;
+      newState['actors'] = event.target.value.split(',').map(x => x.trim()).filter(Boolean);
     } else {
       newState[attr] = event.target.value;
     }
@@ -61,19 +63,19 @@ class App extends React.Component {
           <form>
             <div className="form-group">
               <label>Movie name</label>
-              <input value={this.name} onChange={this.changeValue} type="text" className="form-control" attr="name" placeholder="Enter " />
+              <input value={this.state.name} onChange={this.changeValue} type="text" className="form-control" attr="name" placeholder="Enter " />
             </div>
             <div className="form-group">
               <label>Rating</label>
-              <input value={this.rating} onChange={this.changeValue} type="text" className="form-control" attr="rating" placeholder="Enter" />
+              <input value={this.state.rating} onChange={this.changeValue} type="text" className="form-control" attr="rating" placeholder="Enter" />
             </div>
             <div className="form-group">
               <label>Jenre</label>
-              <input value={this.rating} onChange={this.changeValue} type="text" className="form-control" attr="jenre" placeholder="Enter" />
+              <input value={this.state.jenre} onChange={this.changeValue} type="text" className="form-control" attr="jenre" placeholder="Enter" />
             </div>
             <div className="form-group">
               <label>Actors</label>
-              <input value={this.rating} onChange={this.changeValue} type="text" className="form-control" attr="actors" placeholder="Enter" />
+              <input value={this.state.actors_raw} onChange={this.changeValue} type="text" className="form-control" attr="actors" placeholder="Enter" />
             </div>
           </form>
         </div>
