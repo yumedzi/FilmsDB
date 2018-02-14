@@ -34,12 +34,14 @@ class App extends Component {
     this.attributes = [ // To track order 
       'name',
       'rating',
+      'description',
       'genres_raw',
       'actors_raw',
       'recommendation'
     ]
     this.attributesTypes = { // To track type of attribute
       name: 'text',
+      description: 'text',
       genres_raw: 'text',
       actors_raw: 'text',
       rating: 'select',
@@ -56,6 +58,7 @@ class App extends Component {
     // Default state
     this.state = {
       name: props.name || '',
+      description: props.description || '',
       genres_raw: props.genres || '',
       genres: props.genres ? splitAndTrim(props.genres).map(strToTitle) : [],
       actors_raw: props.actors || '',
@@ -88,6 +91,10 @@ class App extends Component {
             Movie: <strong>{this.state.name}</strong>
           </div>
           <div className="card-body">
+            <details open="true">
+              <summary>Description: </summary>
+              <p>{this.state.description}</p>
+            </details>
             <p>Rating: <strong>{this.state.rating}</strong></p>
             <p>Genres: {this.state.genres.map(x => (<span className="badge badge-primary spacey">{x}</span>))}</p>
             Actors: {this.state.actors.length ? (<ul>{this.state.actors.map(a => <li>{a}</li>)}</ul>): (<i>No actors</i>) }

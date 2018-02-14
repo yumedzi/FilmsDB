@@ -4,5 +4,8 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App name="Pulp Fiction" rating="super" genres="action, comedy" actors="John Travolta, Uma Thurman, Samuel L. Jackson " />, document.getElementById('root'));
+ReactDOM.render(<App name="Pulp Fiction" 
+                     rating="super" genres="action, comedy" actors="John Travolta, Uma Thurman, Samuel L. Jackson " 
+                     description="The lives of two mob hitmen, a boxer, a gangster's wife, and a pair of diner bandits intertwine in four tales of violence and redemption." 
+                />, document.getElementById('root'));
 registerServiceWorker();
