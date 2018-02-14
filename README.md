@@ -1,6 +1,4 @@
-# Film DB app
-
-[Demo](https://github.com/yumedzi/FilmsDB)
+# [Film DB app](https://yumedzi.github.io/FilmsDB/)
 
 Based on:
 * React
