@@ -49,37 +49,41 @@ class App extends Component {
 
   render() {
     return (
-      <div className="card">
-        <div className="card-header">
-          Movie: <strong>{this.state.name}</strong>
+      <div className="container">
+      {/* <div className="row"> */}
+        <div className="card">
+          <div className="card-header">
+            Movie: <strong>{this.state.name}</strong>
+          </div>
+          <div className="card-body">
+            <p>Rating: <strong>{this.state.rating}</strong></p>
+            <p>Jenre: <strong>{this.state.jenre}</strong></p>
+            <p>Actors: {this.state.actors.length ? (<ul>{this.state.actors.map(a => <li>{a}</li>)}</ul>): (<i>No actors</i>) }</p>
+          </div>
+          <div className="card-footer">
+            <h5 className="card-title">Edit form</h5>
+            <form>
+              <div className="form-group">
+                <label>Movie name</label>
+                <input value={this.state.name} onChange={this.changeValue} type="text" className="form-control" attr="name" placeholder="Enter " />
+              </div>
+              <div className="form-group">
+                <label>Rating</label>
+                <input value={this.state.rating} onChange={this.changeValue} type="text" className="form-control" attr="rating" placeholder="Enter" />
+              </div>
+              <div className="form-group">
+                <label>Jenre</label>
+                <input value={this.state.jenre} onChange={this.changeValue} type="text" className="form-control" attr="jenre" placeholder="Enter" />
+              </div>
+              <div className="form-group">
+                <label>Actors</label>
+                <input value={this.state.actors_raw} onChange={this.changeValue} type="text" className="form-control" attr="actors" placeholder="Enter" />
+              </div>
+            </form>
+          </div>
         </div>
-        <div className="card-body">
-          <p>Rating: <strong>{this.state.rating}</strong></p>
-          <p>Jenre: <strong>{this.state.jenre}</strong></p>
-          <p>Actors: {this.state.actors.length ? (<ul>{this.state.actors.map(a => <li>{a}</li>)}</ul>): (<i>No actors</i>) }</p>
-        </div>
-        <div className="card-footer">
-          <h5 className="card-title">Edit form</h5>
-          <form>
-            <div className="form-group">
-              <label>Movie name</label>
-              <input value={this.state.name} onChange={this.changeValue} type="text" className="form-control" attr="name" placeholder="Enter " />
-            </div>
-            <div className="form-group">
-              <label>Rating</label>
-              <input value={this.state.rating} onChange={this.changeValue} type="text" className="form-control" attr="rating" placeholder="Enter" />
-            </div>
-            <div className="form-group">
-              <label>Jenre</label>
-              <input value={this.state.jenre} onChange={this.changeValue} type="text" className="form-control" attr="jenre" placeholder="Enter" />
-            </div>
-            <div className="form-group">
-              <label>Actors</label>
-              <input value={this.state.actors_raw} onChange={this.changeValue} type="text" className="form-control" attr="actors" placeholder="Enter" />
-            </div>
-          </form>
-        </div>
-      </div>
+      {/* </div> */}
+    </div>
     );
   }
 }
