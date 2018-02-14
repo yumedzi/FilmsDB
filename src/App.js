@@ -93,7 +93,7 @@ class App extends Component {
           <div className="card-body">
             <details open="true">
               <summary>Description: </summary>
-              <p>{this.state.description}</p>
+              <p><i>{this.state.description}</i></p>
             </details>
             <p>Rating: <strong>{this.state.rating}</strong></p>
             <p>Genres: {this.state.genres.map(x => (<span className="badge badge-primary spacey">{x}</span>))}</p>
