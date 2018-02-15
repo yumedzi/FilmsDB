@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Grid, Col, Row, Panel, Form, FormGroup, Badge, FormControl} from 'react-bootstrap'; // eslint-disable-line no-unused-vars
 import './App.css';
 
 
@@ -9,24 +10,29 @@ const strToTitle = str => {
 
 const splitAndTrim = str => str.split(',').map(x => x.trim()).filter(Boolean);
 
-const FormField = props => (
-  <div className="form-group row">
-    <label for={props.attr} className="col-sm-3 col-form-label">{strToTitle(props.attr.replace('_raw', ''))}</label>
-    <div className="col-sm-8">
-      { props.form.attributesTypes[props.attr] === 'text' ?
-          <input value={props.form.state[props.attr]} onChange={props.form.changeValue} 
-            type="text" className="form-control" id={props.attr} key={props.attr}
-            attr={props.attr.replace('_raw', '')} placeholder={'Enter ' + props.attr.replace('_raw', '')} 
-          />
-        :
-          <select value={props.form.state[props.attr]} className="form-control" onChange={props.form.changeValue}
-            attr={props.attr.replace('_raw', '')} key={props.attr.replace('_raw', '')}>
-              {props.form.options[props.attr].map(x => <option key={x} value={x}>{x}</option>)}
-          </select>
-      }
-    </div>
-  </div>
-)
+const FormField = props => {
+  const form = props.form;
+  const attr_raw = props.attr;
+  const attr = attr_raw.replace('_raw', '');
+  const type = form.attributesTypes[attr_raw];
+
+  return <FormGroup>
+    <Col sm={3}>
+      {strToTitle(attr)}
+    </Col>
+    <Col sm={8}>
+      <FormControl 
+        componentClass={type}
+        placeholder={`Enter ${attr}`} 
+        attr={attr}
+        onChange={form.changeValue} 
+        value = {form.state[attr_raw]}
+      >
+        {type === 'select' ? form.options[props.attr].map((x,i) => (<option key={i} value={x}>{x}</option>)) : null}
+      </FormControl>
+    </Col>
+  </FormGroup>
+};
 
 class App extends Component {
   constructor(props) {
@@ -39,11 +45,11 @@ class App extends Component {
       'actors_raw',
       'recommendation'
     ]
-    this.attributesTypes = { // To track type of attribute
-      name: 'text',
-      description: 'text',
-      genres_raw: 'text',
-      actors_raw: 'text',
+    this.attributesTypes = { // To track Form Field type of attribute
+      name: 'input',
+      description: 'input',
+      genres_raw: 'input',
+      actors_raw: 'input',
       rating: 'select',
       recommendation: 'select'
     };
@@ -70,7 +76,7 @@ class App extends Component {
 
   changeValue = function (event) {
     let newState = {};
-    console.log(event.target);
+    // console.log(event.target);
     const attr = event.target.getAttribute('attr');
     if (this.attributes.includes(`${attr}_raw`)) {
       newState[`${attr}_raw`] = event.target.value;
@@ -79,36 +85,35 @@ class App extends Component {
       newState[attr] = event.target.value;
     }
     
-    console.log(newState);
+    // console.log(newState);
     this.setState(newState);
   };
 
   render() {
     return (
-      <div className="container">
-        <div className="card">
-          <div className="card-header">
+      <Grid>
+        <Panel>
+          <Panel.Heading>
             Movie: <strong>{this.state.name}</strong>
-          </div>
-          <div className="card-body">
+          </Panel.Heading>
+          <Panel.Body>
             <details open="true">
               <summary>Description: </summary>
               <p><i>{this.state.description}</i></p>
             </details>
             <p>Rating: <strong><mark>{this.state.rating}</mark></strong></p>
-            <p>Genres: {this.state.genres.map(x => (<span className="badge badge-primary spacey">{x}</span>))}</p>
-            Actors: {this.state.actors.length ? (<ul>{this.state.actors.map(a => <li>{a}</li>)}</ul>): (<i>No actors</i>) }
-            <p>Would recommend to: <strong>{this.state.recommendation}</strong></p>
-          </div>
-          <div className="card-footer">
-            <h5 className="card-title">Edit form</h5>
-            <form>
-              {/* Text-based inputs go first */}
-              {this.attributes.map(x => (<FormField attr={x} form={this}/>))}
-            </form>
-          </div>
-        </div>
-      </div>
+            <p>Genres: {this.state.genres.map((x,i) => (<Badge key={i}>{x}</Badge>))}</p>
+            Actors: {this.state.actors.length ? (<ul>{this.state.actors.map((x,i) => <li key={i}>{x}</li>)}</ul>): (<i>No actors</i>) }
+            <p>Would recommend to: <strong><mark>{this.state.recommendation}</mark></strong></p>
+          </Panel.Body>
+          <Panel.Footer>
+            <h4>Edit form</h4>
+            <Form horizontal>
+              {this.attributes.map(x => (<FormField key={x} attr={x} form={this}/>))}
+            </Form>
+          </Panel.Footer>
+        </Panel>
+      </Grid>
     );
   }
 }
