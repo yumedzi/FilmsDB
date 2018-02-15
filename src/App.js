@@ -11,17 +11,18 @@ const strToTitle = str => {
 const splitAndTrim = str => str.split(',').map(x => x.trim()).filter(Boolean);
 
 const FormField = ({form, attr}) => {
+  const attr_clean = attr.replace('_list', '');
   const attr_raw = attr.replace('_list', '_raw');
   const type = form.attributesTypes[attr];
 
   return <FormGroup>
     <Col sm={3}>
-      {strToTitle(attr)}
+      {strToTitle(attr_clean)}
     </Col>
     <Col sm={8}>
       <FormControl 
         componentClass={type}
-        placeholder={`Enter ${attr.replace('_list', '')}`} 
+        placeholder={`Enter ${attr_clean}`} 
         attr={attr}
         onChange={form.changeValue} 
         value = {form.state[attr_raw]}
@@ -60,16 +61,19 @@ class App extends Component {
     this.changeValue = this.changeValue.bind(this);
 
     // Default state
-    this.state = {
-      name: props.name || '',
-      description: props.description || '',
-      genres_raw: props.genres || '',
-      genres_list: props.genres ? splitAndTrim(props.genres).map(strToTitle) : [],
-      actors_raw: props.actors || '',
-      actors_list: props.actors ? splitAndTrim(props.actors).map(strToTitle) : [],
-      rating: this.options.rating.includes(props.rating) ? props.rating : 'so-so',
-      recommendation: this.options.recommendation.includes(props.recommendation) ? props.recommendation : 'movie experts',
-    };
+    this.state = {};
+    this.attributes.map(x => { // eslint-disable-line array-callback-return
+      if (x.endsWith('_list')) {
+        let value = props[x.replace('_list', '')];
+        // E.g.: state.actors_list = ["Bruce Willis", "Uma Turman"]
+        //       state.actors_raw = "Bruce Willis, Uma Turman"
+        this.state[x] = value ? splitAndTrim(value).map(strToTitle) : [];
+        this.state[x.replace('_list', '_raw')] = value || '';
+      } else {
+        // E.g.: state.name = "Django unchained"
+        this.state[x] = props[x] || ''
+      }
+    });
   }
 
   changeValue = function (event) {
