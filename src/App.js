@@ -106,7 +106,7 @@ class App extends Component {
             </details>
             <p>Rating: <strong><mark>{this.state.rating}</mark></strong></p>
             <p>Genres: {this.state.genres_list && this.state.genres_list.map((x,i) => (<Badge key={i}>{x}</Badge>))}</p>
-            Actors: {this.state.actors_list.length ? (<ul>{this.state.actors_list.map((x,i) => <li key={i}>{x}</li>)}</ul>): (<i>No actors</i>) }
+            Actors: {this.state.actors_list.length ? <ul>{this.state.actors_list.map((x,i) => <li key={i}>{x}</li>)}</ul> : <i>No actors</i>}
             <p>Would recommend to: <strong><mark>{this.state.recommendation}</mark></strong></p>
           </Panel.Body>
           <Panel.Footer>
