@@ -10,11 +10,9 @@ const strToTitle = str => {
 
 const splitAndTrim = str => str.split(',').map(x => x.trim()).filter(Boolean);
 
-const FormField = props => {
-  const form = props.form;
-  const attr_raw = props.attr;
-  const attr = attr_raw.replace('_raw', '');
-  const type = form.attributesTypes[attr_raw];
+const FormField = ({form, attr}) => {
+  const attr_raw = attr.replace('_list', '_raw');
+  const type = form.attributesTypes[attr];
 
   return <FormGroup>
     <Col sm={3}>
@@ -23,12 +21,12 @@ const FormField = props => {
     <Col sm={8}>
       <FormControl 
         componentClass={type}
-        placeholder={`Enter ${attr}`} 
+        placeholder={`Enter ${attr.replace('_list', '')}`} 
         attr={attr}
         onChange={form.changeValue} 
         value = {form.state[attr_raw]}
       >
-        {type === 'select' ? form.options[props.attr].map((x,i) => (<option key={i} value={x}>{x}</option>)) : null}
+        {type === 'select' ? form.options[attr].map((x,i) => (<option key={i} value={x}>{x}</option>)) : null}
       </FormControl>
     </Col>
   </FormGroup>
@@ -41,15 +39,15 @@ class App extends Component {
       'name',
       'rating',
       'description',
-      'genres_raw',
-      'actors_raw',
+      'genres_list',
+      'actors_list',
       'recommendation'
     ]
     this.attributesTypes = { // To track Form Field type of attribute
       name: 'input',
       description: 'input',
-      genres_raw: 'input',
-      actors_raw: 'input',
+      genres_list: 'input',
+      actors_list: 'input',
       rating: 'select',
       recommendation: 'select'
     };
@@ -66,9 +64,9 @@ class App extends Component {
       name: props.name || '',
       description: props.description || '',
       genres_raw: props.genres || '',
-      genres: props.genres ? splitAndTrim(props.genres).map(strToTitle) : [],
+      genres_list: props.genres ? splitAndTrim(props.genres).map(strToTitle) : [],
       actors_raw: props.actors || '',
-      actors: props.actors ? splitAndTrim(props.actors).map(strToTitle) : [],
+      actors_list: props.actors ? splitAndTrim(props.actors).map(strToTitle) : [],
       rating: this.options.rating.includes(props.rating) ? props.rating : 'so-so',
       recommendation: this.options.recommendation.includes(props.recommendation) ? props.recommendation : 'movie experts',
     };
@@ -78,8 +76,9 @@ class App extends Component {
     let newState = {};
     // console.log(event.target);
     const attr = event.target.getAttribute('attr');
-    if (this.attributes.includes(`${attr}_raw`)) {
-      newState[`${attr}_raw`] = event.target.value;
+    if (attr.endsWith('_list')) {
+      const attr_raw = attr.replace('_list', '_raw');
+      newState[attr_raw] = event.target.value;
       newState[attr] = event.target.value.split(',').map(x => x.trim()).filter(Boolean).map(strToTitle);
     } else {
       newState[attr] = event.target.value;
@@ -102,8 +101,8 @@ class App extends Component {
               <p><i>{this.state.description}</i></p>
             </details>
             <p>Rating: <strong><mark>{this.state.rating}</mark></strong></p>
-            <p>Genres: {this.state.genres.map((x,i) => (<Badge key={i}>{x}</Badge>))}</p>
-            Actors: {this.state.actors.length ? (<ul>{this.state.actors.map((x,i) => <li key={i}>{x}</li>)}</ul>): (<i>No actors</i>) }
+            <p>Genres: {this.state.genres_list && this.state.genres_list.map((x,i) => (<Badge key={i}>{x}</Badge>))}</p>
+            Actors: {this.state.actors_list.length ? (<ul>{this.state.actors_list.map((x,i) => <li key={i}>{x}</li>)}</ul>): (<i>No actors</i>) }
             <p>Would recommend to: <strong><mark>{this.state.recommendation}</mark></strong></p>
           </Panel.Body>
           <Panel.Footer>
